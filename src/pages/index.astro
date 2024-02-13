@@ -1,0 +1,265 @@
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>You've got a letter!</title>
+		<style>
+			:root {
+				--clr-accent-700: hsl(342, 100%, 70%);
+				--clr-accent-900: hsl(342, 100%, 90%);
+
+				--clr-secondary-700: hsl(195, 53%, 70%);
+				--clr-secondary-900: hsl(195, 53%, 90%);
+
+				--clr-primary-700: hsl(34, 78%, 70%);
+				--clr-primary-800: hsl(34, 78%, 80%);
+				--clr-primary-900: hsl(34, 78%, 90%);
+				--clr-primary-950: hsl(34, 78%, 95%);
+
+				--open-transition-duration: 1s;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				min-height: 100dvh;
+				background: linear-gradient(to bottom, var(--clr-secondary-900), var(--clr-secondary-700));
+			}
+
+			h1 {
+				font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+				text-align: center;
+				padding-block: 32px;
+			}
+
+			section {
+				background-color: var(--clr-primary-900);
+				border: 2px solid var(--clr-primary-800);
+			}
+
+			.letter-container {
+				position: relative;
+				height: 450px;
+				width: 800px;
+				margin-inline: auto;
+				transition: all var(--open-transition-duration) ease-out;
+				background-color: var(--clr-primary-800);
+			}
+
+			.letter-container.open {
+				transform: translateY(50%);
+			}
+
+			.letter-lip, 
+			.letter-lip > div {
+				clip-path: polygon(0% 0%, 100% 0%, 50% 100%, 50% 100%);
+			}
+
+            .letter-lip > div,
+            .letter-cutout {
+				background-color: var(--clr-primary-900);
+            }
+
+			.letter-lip, .letter-cutout {
+				position: absolute;
+				top: 0;
+			}
+
+			.letter-lip {
+				left: 0;
+				width: 100%;
+				height: 250px;
+				transform-origin: 50% 0%;
+				background-color: var(--clr-primary-800);
+			}
+
+			.letter-lip > div {
+				position: absolute;
+				inset: 2px;
+			}
+
+			.letter-lip button {
+				position: absolute;
+				bottom: 32px;
+				left: 50%;
+				transform: translateX(-50%);
+				font-size: medium;
+				border: 0;
+				background-color: hsl(0, 0%, 50%);
+				color: whitesmoke;
+				padding: 8px;
+				border-radius: 8px;
+				cursor: pointer;
+				transition: all 150ms ease-out;
+			}
+
+			.letter-lip button:hover {
+				background-color: hsl(0, 0%, 30%);
+			}
+
+			.letter-container.open .letter-lip {
+                animation: open-lip var(--open-transition-duration) ease-in-out forwards;
+			}
+			
+
+			.letter-container.open .letter-lip button {
+				display: none;
+			}
+
+			.letter-cutout {
+                inset: 0;
+				clip-path: polygon(0% 0%, 50% 22%, 100% 0%, 100% 100%, 0% 100%);
+			}
+
+			.letter-content {
+                position: relative;
+				width: 90%;
+				height: 90%;
+				margin: auto;
+                background-color: var(--clr-primary-950);
+                padding: 16px;
+                display: grid;
+                grid-template-rows: auto auto 3fr 1fr;
+                font-family: "Albys font";
+                font-size: 200%;
+                letter-spacing: -2px;
+			}
+
+            .letter-container h2 {
+                margin-block: auto;
+                text-align: center;
+            }
+
+            .letter-container form {
+                text-align: center;
+            }
+
+            .letter-container label {
+                position: relative;
+                padding: 16px;
+                border: 0;
+            }
+
+            .letter-container label::after {
+                position: absolute;
+                content: '';
+                left: 8px;
+                top: 18px;
+                width: 20px;
+                height: 20px;
+                background-color: var(--clr-primary-950);
+                border: 3px solid currentColor;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .letter-container label:has(> input:checked)::after {
+                content: 'X';
+            }
+
+			.letter-container, .letter-content {
+				box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 20%);
+			}
+
+            .letter-container.open .letter-content {
+                animation: show-content var(--open-transition-duration) ease-in-out var(--open-transition-duration) forwards;
+            }
+
+            @keyframes show-content {
+                50% {
+                    transform: translateY(-25%);
+                }
+
+                100% {
+                    transform: translateY(0);
+                    z-index: 99;
+                }
+            }
+
+            @keyframes open-lip {
+                99% {
+                    z-index: initial;
+                }
+
+                100% {
+                    transform: scaleY(-1);
+                    z-index: -1;
+                }
+            }
+		</style>
+	</head>
+	<body>
+		<h1>You've got a letter!</h1>
+		<section class="letter-container">
+            <section class="letter-content">
+                <p>From: Alberto</p>
+                <p>To: Virginia</p>
+                <h2>Would you be my valentine?</h2>
+                <form>
+                    <label>
+                        <input type="radio" name="response" value="ok" />
+                        <span>Yes!</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="response" value="ko" />
+                        <span>No...</span>
+                    </label>
+                </form>
+            </section>
+			<div class="letter-cutout">
+			</div>
+            <div class="letter-lip">
+                <div>
+                    <button>Open</button>
+                </div>
+            </div>
+		</section>
+
+		<script>
+            import JSConfetti from "js-confetti"
+
+			const open = () => {
+				console.log("opening");
+				const letterContainer = document.querySelector("section.letter-container")
+				letterContainer?.classList.add("open")
+			}
+            const confetti = new JSConfetti()
+			let confettiIntervalId: number | undefined
+
+			const body = document.querySelector<HTMLBodyElement>("body")
+			const title = document.querySelector<HTMLHeadingElement>("h1")
+			document.querySelectorAll<HTMLButtonElement>(".letter-lip button").forEach(button => button.addEventListener("click", open))
+            document.querySelectorAll<HTMLInputElement>("input[type='radio").forEach(radio => {
+                radio.checked = false
+                radio.addEventListener("change", () => {
+					if (!radio.checked) {
+						return
+					}
+					if (!!confettiIntervalId) {
+						clearInterval(confettiIntervalId)
+					}
+                    const isConfirmedAnswer = radio.value === "ok"
+                    if (isConfirmedAnswer) {
+						confettiIntervalId = setInterval(async () => await confetti.addConfetti({
+							emojis: ["💗", "💙", "💛"],
+							confettiNumber: 10,
+						}), 500)
+						document.addEventListener("close", () => clearInterval(confettiIntervalId))
+						body!.style.background = "linear-gradient(to bottom, var(--clr-accent-700), var(--clr-accent-900))"
+						title!.innerText = "I love you!"
+                    } else {
+						body!.style.background = "linear-gradient(to bottom, grey, black)"
+						title!.innerText = "Ok... I still love you anyways"
+					}
+                })
+            })
+		</script>
+	</body>
+</html>
